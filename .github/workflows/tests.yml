@@ -1,13 +1,17 @@
 # Automatická kontrola na GitHubu – spustí testy při každém push a pull requestu
-name: tests                         # název workflow
-on: [push, pull_request]            # kdy se spouští
+name: tests                                  # název workflow
+on: [push, pull_request]                     # kdy se spouští
 jobs:
-  test:                             # jediná úloha "test"
-    runs-on: ubuntu-latest          # běží na Linuxu
+  test:                                      # jediná úloha "test"
+    runs-on: ubuntu-latest                   # běží na Linuxu
     steps:
-      - uses: actions/checkout@v4   # stáhne kód repozitáře
-      - uses: actions/setup-python@v5  # nainstaluje Python
+      - uses: actions/checkout@v4            # stáhne kód repozitáře
+      - uses: shivammathur/setup-php@v2      # nainstaluje PHP
         with:
-          python-version: "3.12"    # verze Pythonu
-      - run: pip install -r requirements.txt  # nainstaluje závislosti
-      - run: python -m pytest -v    # spustí testy (včetně vytvoření kurzu a ověření uložení)
+          php-version: "8.3"                 # verze PHP (Laravel 13 potřebuje 8.3+)
+          extensions: mbstring, pdo_sqlite   # potřebná rozšíření PHP
+          coverage: none                     # měření pokrytí nepotřebujeme
+      - run: composer install --no-interaction --prefer-dist  # nainstaluje závislosti podle composer.lock
+      - run: cp .env.example .env            # vytvoří konfigurační soubor
+      - run: php artisan key:generate        # vygeneruje šifrovací klíč aplikace
+      - run: php artisan test                # spustí testy (včetně vytvoření kurzu a ověření uložení)
