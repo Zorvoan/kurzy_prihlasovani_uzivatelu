@@ -1,0 +1,10 @@
+# Soubory, které git nemá ukládat
+# zkompilované soubory Pythonu
+__pycache__/
+*.pyc
+# mezipaměť pytestu
+.pytest_cache/
+# lokální databáze (vytvoří se sama při spuštění)
+*.sqlite3
+# virtuální prostředí
+.venv/

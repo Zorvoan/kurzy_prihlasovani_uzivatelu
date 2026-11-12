@@ -1,0 +1,15 @@
+{% extends "base.html" %} {# použijeme základní šablonu #}
+{% block content %} {# začátek obsahu #}
+<h1>{{ 'Upravit účastníka' if participant.id else 'Nový účastník' }}</h1> {# nadpis podle toho, zda účastník existuje #}
+{% include "_errors.html" %} {# výpis chyb validace #}
+<form method="post"> {# formulář odesílaný metodou POST #}
+  <label>Jméno <input name="name" value="{{ participant.name or '' }}" required></label> {# jméno (povinné) #}
+  <label>E-mail <input name="email" type="email" value="{{ participant.email or '' }}" required></label> {# e-mail (platný a jedinečný) #}
+  <button type="submit">Uložit</button> {# odeslání #}
+</form>
+{% if participant.id %} {# mazat lze jen existujícího účastníka #}
+<form method="post" action="{{ url_for('participant_delete', participant_id=participant.id) }}" onsubmit="return confirm('Opravdu smazat účastníka i jeho přihlášky?')"> {# potvrzení před smazáním #}
+  <button type="submit">Smazat účastníka</button> {# tlačítko smazání #}
+</form>
+{% endif %} {# konec podmínky #}
+{% endblock %} {# konec obsahu #}

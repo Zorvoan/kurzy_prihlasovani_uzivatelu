@@ -1,0 +1,13 @@
+# Automatická kontrola na GitHubu – spustí testy při každém push a pull requestu
+name: tests                         # název workflow
+on: [push, pull_request]            # kdy se spouští
+jobs:
+  test:                             # jediná úloha "test"
+    runs-on: ubuntu-latest          # běží na Linuxu
+    steps:
+      - uses: actions/checkout@v4   # stáhne kód repozitáře
+      - uses: actions/setup-python@v5  # nainstaluje Python
+        with:
+          python-version: "3.12"    # verze Pythonu
+      - run: pip install -r requirements.txt  # nainstaluje závislosti
+      - run: python -m pytest -v    # spustí testy (včetně vytvoření kurzu a ověření uložení)

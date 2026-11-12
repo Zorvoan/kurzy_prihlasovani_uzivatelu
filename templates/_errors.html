@@ -1,0 +1,6 @@
+{# Malá šablona pro výpis chyb validace; vkládá se přes {% include "_errors.html" %} #}
+{% if errors %} {# zobrazí se jen tehdy, když nějaké chyby jsou #}
+  <ul class="errors"> {# červený seznam chyb #}
+    {% for e in errors %}<li>{{ e }}</li>{% endfor %} {# každá chyba jako jedna položka #}
+  </ul>
+{% endif %} {# konec podmínky #}
